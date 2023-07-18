@@ -1,5 +1,9 @@
+// In the beggining of the file
+import {POSTGRES_URL} from '$env/static/private'
 import { createPool } from '@vercel/postgres';
 import { sql } from "@vercel/postgres";
+
+process.env.POSTGRES_URL = POSTGRES_URL;
 
 async function seed() {
   const createTable = await sql`
@@ -40,7 +44,9 @@ async function seed() {
 }
 
 export async function load() {
-	const db = createPool();
+	const db = createPool({
+    connectionString: POSTGRES_URL 
+  }); 
   const startTime = Date.now();
 
   try {
